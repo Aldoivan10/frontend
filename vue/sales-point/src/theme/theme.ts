@@ -1,59 +1,77 @@
-import { definePreset } from '@primevue/themes'
-import Lara from '@primevue/themes/lara'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import { aliases, fa } from 'vuetify/iconsets/fa'
+import { VNumberInput } from 'vuetify/labs/VNumberInput'
+import { es } from 'vuetify/locale'
 
-const ThemePreset = definePreset(Lara, {
-    semantic: {
-        primary: {
-            50: '{orange.50}',
-            100: '{orange.100}',
-            200: '{orange.200}',
-            300: '{orange.300}',
-            400: '{orange.400}',
-            500: '{orange.500}',
-            600: '{orange.600}',
-            700: '{orange.700}',
-            800: '{orange.800}',
-            900: '{orange.900}',
-            950: '{orange.950}',
+const light = {
+    dark: false,
+    colors: {
+        background: '#fafafa',
+        surface: '#FFFFFF',
+        primary: '#FF9800',
+        'primary-lighten-1': '#FFA726',
+        'primary-darken-1': '#FB8C00',
+        secondary: '#EF6C00',
+        'secondary-darken-1': '#E65100',
+    },
+}
+
+const dark = {
+    dark: true,
+    colors: {
+        background: '#40444b',
+        surface: '#292b2f',
+        primary: '#536dfe',
+        'primary-lighten-1': '#4DA0FF',
+        'primary-darken-1': '#3a4cb1',
+        secondary: '#6543FF',
+        'secondary-darken-1': '#7831FF',
+    },
+}
+
+export const AppTheme = createVuetify({
+    components: {
+        ...components,
+        VNumberInput,
+    },
+    defaults: {
+        VTextField: {
+            density: 'comfortable',
         },
-        colorScheme: {
-            light: {
-                surface: {
-                    0: '#ffffff',
-                    50: '{slate.50}',
-                    100: '{slate.100}',
-                    200: '{slate.200}',
-                    300: '{slate.300}',
-                    400: '{slate.400}',
-                    500: '{slate.500}',
-                    600: '{slate.600}',
-                    700: '{slate.700}',
-                    800: '{slate.800}',
-                    900: '{slate.900}',
-                    950: '{slate.950}',
-                },
-            },
-            dark: {
-                surface: {
-                    0: '#ffffff',
-                    50: '#fafafa',
-                    100: '#f4f4f5',
-                    200: '#e4e4e7',
-                    300: '#d4d4d8',
-                    400: '#a1a1aa',
-                    500: '#71717a',
-                    600: '#52525b',
-                    700: '#3f3f46',
-                    800: '#27272a',
-                    900: '#18181b',
-                    950: '#09090b',
-                },
-            },
+        VTextarea: {
+            density: 'comfortable',
+        },
+        VSelect: {
+            density: 'comfortable',
+        },
+        VBtn: {
+            elevation: 0,
+            size: 'small',
+        },
+        VAppBarNavIcon: {
+            size: 'small',
+        },
+        VListItem: {
+            VIcon: { size: 'small' },
+        },
+    },
+    directives,
+    icons: {
+        defaultSet: 'fa',
+        aliases,
+        sets: { fa },
+    },
+    locale: {
+        locale: 'es',
+        messages: { es },
+    },
+    theme: {
+        defaultTheme: 'light',
+        themes: {
+            light,
+            dark,
         },
     },
 })
-
-export const AppTheme = {
-    theme: { preset: ThemePreset, options: { darkModeSelector: '.app-dark' } },
-    ripple: true,
-}

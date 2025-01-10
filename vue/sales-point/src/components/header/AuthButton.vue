@@ -1,11 +1,5 @@
-<script setup lang="ts">
-import { Button } from 'primevue';
-</script>
+<script setup lang="ts"></script>
 
 <template>
-    <Button v-tooltip.bottom="'Iniciar sesión'" >
-        <template #icon>
-            <font-awesome-icon :icon="['fas', 'user-tie']" />
-        </template>
-    </Button>
+    <v-btn variant="text" v-tooltip="'Iniciar sesión'" icon="fas fa-user-tie" />
 </template>

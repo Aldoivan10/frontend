@@ -1,18 +1,18 @@
-body {
-    --space: 0.5rem;
+html {
+    overflow: hidden;
 
-    font-family: sans-serif;
-    height: 100dvh;
-    margin: 0;
+    body {
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
 
-    header {
-        .p-menubar {
-            border-radius: 0;
-        }
-
-        .p-menubar-end {
+        .main-content {
+            flex-grow: 1;
             display: flex;
-            gap: var(--space);
+
+            .v-layout > nav {
+                position: initial !important;
+            }
         }
     }
 }
