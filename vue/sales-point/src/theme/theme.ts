@@ -8,8 +8,8 @@ import { es } from 'vuetify/locale'
 const light = {
     dark: false,
     colors: {
-        background: '#fafafa',
-        surface: '#FFFFFF',
+        background: '#FFFFFF',
+        surface: '#F8FAFC',
         primary: '#FF9800',
         'primary-lighten-1': '#FFA726',
         'primary-darken-1': '#FB8C00',

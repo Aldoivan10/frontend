@@ -5,6 +5,8 @@ import NavLayout from './NavLayout.vue'
 <template>
     <section class="main-content">
         <NavLayout />
-        <main></main>
+        <main>
+            <RouterView />
+        </main>
     </section>
 </template>

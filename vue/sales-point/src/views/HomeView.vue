@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import { Button } from 'primevue'
+import IconAldoivan from '@/components/icons/IconAldoivan.vue'
 </script>
 
 <template>
-    <main>
-        <Button label="Submit">
-            <template #icon>
-                <font-awesome-icon :icon="['fas', 'bars']" />
-            </template>
-        </Button>
-    </main>
+    <IconAldoivan />
 </template>

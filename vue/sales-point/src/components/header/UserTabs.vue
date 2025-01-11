@@ -9,7 +9,17 @@
             center-active
             show-arrows
         >
-            <v-tab> </v-tab>
+            <v-tab>
+                <v-btn
+                    icon="fas fa-circle-xmark"
+                    class="ms-2"
+                    size="x-small"
+                    variant="plain"
+                    max-width="1.1rem"
+                    max-height="1.1rem"
+                    v-tooltip="'Cerrar'"
+                />
+            </v-tab>
         </v-tabs>
     </v-card>
 </template>

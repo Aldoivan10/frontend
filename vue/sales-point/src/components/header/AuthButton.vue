@@ -1,5 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
-    <v-btn variant="text" v-tooltip="'Iniciar sesión'" icon="fas fa-user-tie" />
+    <v-btn @click="$dialog.choice('Hola', 'mundo')" variant="text" v-tooltip="'Iniciar sesión'" icon="fas fa-user-tie" />
 </template>

@@ -1,3 +1,4 @@
+import { Route } from '@/router/routes'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -9,9 +10,11 @@ export const useMenuStore = defineStore('menu-store', () => {
             subtitle: 'F1',
             icon: 'fas fa-cart-shopping',
             tooltip: 'F1',
+            route: Route.SALES_POINT,
         },
     ])
     const expandMenu = ref(true)
+    const currentRoute = ref(Route.HOME)
 
-    return { menuItems, expandMenu }
+    return { menuItems, expandMenu, currentRoute }
 })
