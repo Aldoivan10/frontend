@@ -5,7 +5,5 @@ export const useUserStore = defineStore('user', () => {
     const currentUser = ref<Maybe<User.State>>()
     const availibleUsers = ref<User.State[]>([])
 
-
-
     return { currentUser, availibleUsers }
 })

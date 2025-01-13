@@ -1,6 +1,6 @@
-import Mousetrap from "mousetrap";
-import { createVNode, h, ref, render, type App, type Component } from "vue";
-import { VBtn, VCard, VCardActions, VCardText, VDialog, VSpacer } from "vuetify/components";
+import Mousetrap from 'mousetrap'
+import { createVNode, h, ref, render, type App, type Component, type Ref, type VNode } from 'vue'
+import { VBtn, VCard, VCardActions, VCardText, VDialog, VSpacer } from 'vuetify/components'
 
 export class Dialog {
     private readonly app: App
@@ -12,21 +12,36 @@ export class Dialog {
     public choice(
         title: string,
         content: Component | string,
-        props: Dialog.ChoiceProps = { onEscClose: true },
+        props: Dialog.ChoiceProps = { onEscClose: true, persistent: true },
     ) {
-        const $dialog = this.getDialog
         const $container = document.querySelector('.v-overlay-container')!
+        const { onEscClose: esc, ...rest } = props
+        const $node = ref<VNode>()
+        const show = ref(true)
 
-        const $el = createVNode({
-            render() {
-                return $dialog(title, content, props)
-            },
-        })
-        $el.appContext = this.app._context
-        render($el, $container)
+        if (esc) Mousetrap.bind('esc', () => (show.value = false))
+
+        const onAfterLeave = () => {
+            render(null, $container)
+            Mousetrap.unbind('esc')
+        }
+
+        $node.value = this.getDialogNode({ title, content, onAfterLeave, ...rest }, show)
+        render($node.value, $container)
     }
 
     public confirm() {}
+
+    private getDialogNode(props: Omit<Dialog.Props, 'onEscClose'>, show: Ref<boolean>) {
+        const $dialog = this.getDialog
+        const $node = createVNode({
+            render() {
+                return $dialog({ modelValue: show.value, ...props })
+            },
+        })
+        $node.appContext = this.app._context
+        return $node
+    }
 
     private getActions(buttons: Dialog.Button[]) {
         const $spacer = h(VSpacer)
@@ -39,32 +54,18 @@ export class Dialog {
         return h(VCardActions, null, { default: () => [$spacer, ...$buttons] })
     }
 
-    private getDialog(title: string, content: string | Component, props: Dialog.Props) {
+    private getDialog(props: Omit<Dialog.Props, 'onEscClose'>) {
+        const { title, content, actions, ...rest } = props
         const $content = h(VCardText, null, { default: () => content })
-        const { actions, onEscClose: esc, ...rest } = props
         const $childs = [$content]
-        const $dialog = ref<VDialog>()
 
         if (actions && Array.isArray(actions)) {
             const $actions = this.getActions(actions)
             $childs.push($actions)
         }
-        const key = esc ? 'esc' : undefined
-        if (key)
-            Mousetrap.bind(key, () => {})
 
         const $card = h(VCard, { title }, { default: () => $childs })
-
-        const $el = h(
-            VDialog,
-            {
-                modelValue: true,
-                persistent: true,
-                ref: $dialog,
-                ...rest,
-            },
-            { default: () => $card },
-        )
-        return $el
+        const $dialog = h(VDialog, rest, { default: () => $card })
+        return $dialog
     }
 }

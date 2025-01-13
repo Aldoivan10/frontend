@@ -10,4 +10,3 @@ export const DialogPlugin = {
         app.config.globalProperties.$dialog = dialog
     },
 }
-

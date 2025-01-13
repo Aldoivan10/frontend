@@ -9,9 +9,7 @@ export const useDialogStore = defineStore('dialog', () => {
     if (!dialog)
         throw new Error('useDialog debe ser utilizado después de instalar el dialogPlugin.')
 
-    function showUsers(onEscClose = true) {
-        
-    }
+    function showUsers(onEscClose = true) {}
 
     return { dialog, showUsers }
 })

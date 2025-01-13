@@ -1,6 +1,6 @@
-import { DialogSymbol } from "@/plugins/dialog.plugin"
-import { Dialog } from "@/service/dialog.svc"
-import { inject, ref } from "vue"
+import { DialogSymbol } from '@/plugins/dialog.plugin'
+import { Dialog } from '@/service/dialog.svc'
+import { inject, ref } from 'vue'
 
 export function useDialog() {
     const dialog = inject<Omit<Dialog, 'install'>>(DialogSymbol)

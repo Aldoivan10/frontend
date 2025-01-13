@@ -18,7 +18,7 @@ export const routes: Readonly<RouteRecordRaw[]> = [
         path: Route.SALES_POINT,
         name: 'sales-point',
         component: HomeView,
-        beforeEnter: needUserGuard
+        beforeEnter: needUserGuard,
     },
     {
         path: Route.PRODUCTS,

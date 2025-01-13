@@ -39,16 +39,22 @@ declare global {
         }
 
         type Props = {
+            title: string
+            content: string | Component
+
             icon?: string
+            persistent?: boolean
+            modelValue?: Any
             onEscClose: boolean
             fullScreen?: boolean
             role?: Role | 'choice'
             width?: string | number
+            onAfterLeave?: () => void
             maxWidth?: string | number
             actions?: Button[] | boolean
             form?: { name: string; props: Record<string, string | number | boolean> }
         }
-        
+
         type Child = VNode<
             RendererNode,
             RendererElement,
@@ -57,8 +63,11 @@ declare global {
             }
         >
 
-        type ChoiceProps = Exclude<Props, "icon" | "role">
-    
+        type ChoiceProps = Omit<
+            Props,
+            'icon' | 'role' | 'modelValue' | 'title' | 'content' | 'onAfterLeave'
+        >
+
         type Service = {
             install: (app: App) => void
         }
@@ -69,7 +78,7 @@ declare global {
     type Maybe<T> = null | undefined | T
 }
 
-export { }
+export {}
 
 declare module 'vue' {
     interface ComponentCustomProperties {
@@ -78,4 +87,3 @@ declare module 'vue' {
         }
     }
 }
-
