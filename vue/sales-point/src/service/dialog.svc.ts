@@ -1,41 +1,70 @@
-import { createVNode, render, type App, type Component } from "vue";
-import { VCard, VCardText, VDialog } from "vuetify/components";
+import Mousetrap from "mousetrap";
+import { createVNode, h, ref, render, type App, type Component } from "vue";
+import { VBtn, VCard, VCardActions, VCardText, VDialog, VSpacer } from "vuetify/components";
 
 export class Dialog {
-    private readonly defaultProps: Dialog.Props = {
-        fullScreen: false,
-        width: '20rem',
-        role: 'info'
-    }
     private readonly app: App
 
     constructor(app: App) {
         this.app = app
     }
 
-    public choice(title: string, content: Component | string) {
-        const { show, evt } = this.getEvent()
+    public choice(
+        title: string,
+        content: Component | string,
+        props: Dialog.ChoiceProps = { onEscClose: true },
+    ) {
+        const $dialog = this.getDialog
+        const $container = document.querySelector('.v-overlay-container')!
 
-        const $content = createVNode(VCardText, null, { default: () => content })
-        const $card = createVNode(VCard, { title }, { default: () => $content })
-        const $dialog = createVNode(VDialog, { modelValue: show, persistent: true }, { default: () => $card })
-        const $container = document.createElement('div')
-
-        $dialog.appContext = this.app._context
-        render($dialog, $container)
-        
-        window.addEventListener('keydown', evt)
-        document.body.appendChild($container.firstChild!)
+        const $el = createVNode({
+            render() {
+                return $dialog(title, content, props)
+            },
+        })
+        $el.appContext = this.app._context
+        render($el, $container)
     }
 
-    public confirm() {
+    public confirm() {}
 
+    private getActions(buttons: Dialog.Button[]) {
+        const $spacer = h(VSpacer)
+        const $buttons = buttons.map((btn) => {
+            const { keyComb: key, ...props } = btn
+            const $btn = ref<HTMLButtonElement>()
+            if (key) Mousetrap.bind(key, () => $btn.value?.click())
+            return h(VBtn, { ref: $btn, ...props }, { default: () => btn.text })
+        })
+        return h(VCardActions, null, { default: () => [$spacer, ...$buttons] })
     }
 
-    private getEvent() {
-        let show = true
-        const evt = (evt: KeyboardEvent) => { if (evt.key === 'Escape') show = false }
-        return { show, evt }
-    }
+    private getDialog(title: string, content: string | Component, props: Dialog.Props) {
+        const $content = h(VCardText, null, { default: () => content })
+        const { actions, onEscClose: esc, ...rest } = props
+        const $childs = [$content]
+        const $dialog = ref<VDialog>()
 
+        if (actions && Array.isArray(actions)) {
+            const $actions = this.getActions(actions)
+            $childs.push($actions)
+        }
+        const key = esc ? 'esc' : undefined
+        if (key)
+            Mousetrap.bind(key, () => {})
+
+        const $card = h(VCard, { title }, { default: () => $childs })
+
+        const $el = h(
+            VDialog,
+            {
+                modelValue: true,
+                persistent: true,
+                ref: $dialog,
+                ...rest,
+            },
+            { default: () => $card },
+        )
+        return $el
+    }
 }

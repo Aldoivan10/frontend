@@ -28,18 +28,19 @@ declare global {
 
     namespace Dialog {
         type Button = {
-            text?: string
+            text: string
             form?: string
             color?: string
             keyComb?: string
             loading?: boolean
-            action?: ModalButtonParam
-            type?: ButtonHTMLAttributes['type']
             variant?: 'tonal' | 'text'
+            action?: (btn: Button) => void
+            type?: ButtonHTMLAttributes['type']
         }
 
         type Props = {
             icon?: string
+            onEscClose: boolean
             fullScreen?: boolean
             role?: Role | 'choice'
             width?: string | number
@@ -47,6 +48,16 @@ declare global {
             actions?: Button[] | boolean
             form?: { name: string; props: Record<string, string | number | boolean> }
         }
+        
+        type Child = VNode<
+            RendererNode,
+            RendererElement,
+            {
+                [key: string]: Any
+            }
+        >
+
+        type ChoiceProps = Exclude<Props, "icon" | "role">
     
         type Service = {
             install: (app: App) => void
@@ -63,7 +74,7 @@ export { }
 declare module 'vue' {
     interface ComponentCustomProperties {
         $dialog: {
-            choice: (title: string, content: Component | string) => Any
+            choice: (title: string, content: Component | string, props: ChoiceProps) => Any
         }
     }
 }

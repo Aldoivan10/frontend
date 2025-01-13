@@ -1,11 +1,17 @@
+import { DialogSymbol } from '@/plugins/dialog.plugin'
+import { Dialog } from '@/service/dialog.svc'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { inject } from 'vue'
 
 export const useDialogStore = defineStore('dialog', () => {
-    const showDialog = ref(true)
-    const escKeyEvent = (evt: KeyboardEvent) => {
-        if (evt.key == 'Escape') showDialog.value = false
+    const dialog = inject<Omit<Dialog, 'install'>>(DialogSymbol)
+
+    if (!dialog)
+        throw new Error('useDialog debe ser utilizado después de instalar el dialogPlugin.')
+
+    function showUsers(onEscClose = true) {
+        
     }
 
-    return { showDialog, escKeyEvent }
+    return { dialog, showUsers }
 })

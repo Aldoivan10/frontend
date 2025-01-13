@@ -13,7 +13,9 @@
         "format": "prettier --write src/"
     },
     "dependencies": {
+        "@4rk/vue-mousetrap": "^2.0.2",
         "mount-vue-component": "^0.10.2",
+        "mousetrap": "^1.6.5",
         "pinia": "^2.3.0",
         "vue": "^3.5.13",
         "vue-router": "^4.5.0",
@@ -22,6 +24,7 @@
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^6.7.2",
         "@tsconfig/node22": "^22.0.0",
+        "@types/mousetrap": "^1.6.15",
         "@types/node": "^22.10.2",
         "@vitejs/plugin-vue": "^5.2.1",
         "@vue/eslint-config-prettier": "^10.1.0",

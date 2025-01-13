@@ -8,9 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@4rk/vue-mousetrap':
+        specifier: ^2.0.2
+        version: 2.0.2(vue@3.5.13(typescript@5.6.3))
       mount-vue-component:
         specifier: ^0.10.2
         version: 0.10.2
+      mousetrap:
+        specifier: ^1.6.5
+        version: 1.6.5
       pinia:
         specifier: ^2.3.0
         version: 2.3.0(typescript@5.6.3)(vue@3.5.13(typescript@5.6.3))
@@ -30,6 +36,9 @@ importers:
       '@tsconfig/node22':
         specifier: ^22.0.0
         version: 22.0.0
+      '@types/mousetrap':
+        specifier: ^1.6.15
+        version: 1.6.15
       '@types/node':
         specifier: ^22.10.2
         version: 22.10.5
@@ -71,6 +80,11 @@ importers:
         version: 2.2.0(typescript@5.6.3)
 
 packages:
+
+  '@4rk/vue-mousetrap@2.0.2':
+    resolution: {integrity: sha512-9h4ju1BFqu9lHcw1rQN5A4qWeAL32gZaiMwrx0EdTWfJz/9l0P1fslfsBx5VLNfMxpoRGpztJsUIK62kScZVnQ==}
+    peerDependencies:
+      vue: 3.x
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -579,6 +593,9 @@ packages:
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+
+  '@types/mousetrap@1.6.15':
+    resolution: {integrity: sha512-qL0hyIMNPow317QWW/63RvL1x5MVMV+Ru3NaY9f/CuEpCqrmb7WeuK2071ZY5hczOnm38qExWM2i2WtkXLSqFw==}
 
   '@types/node@22.10.5':
     resolution: {integrity: sha512-F8Q+SeGimwOo86fiovQh8qiXfFEh2/ocYv7tU5pJ3EXMSSxk1Joj5wefpFK2fHTf/N6HKGSxIDBT9f3gCxXPkQ==}
@@ -1225,6 +1242,9 @@ packages:
   mount-vue-component@0.10.2:
     resolution: {integrity: sha512-oighx0My03ArLOoTV/kLTJnrBwKdQMvn8uRP+u02rGkgkLiX1LycaHzFGib7mUwkyjp3q3uzVgwHjLZqM6rxyA==}
 
+  mousetrap@1.6.5:
+    resolution: {integrity: sha512-QNo4kEepaIBwiT8CDhP98umTetp+JNfQYBWvC1pc6/OAibuXtRcxZ58Qz8skvEHYvURne/7R8T5VoOI7rDsEUA==}
+
   mrmime@2.0.0:
     resolution: {integrity: sha512-eu38+hdgojoyq63s+yTpN4XMBdt5l8HhMhc4VKLO9KM5caLIBvUm4thi7fFaxyTmCKeNnXZ5pAlBwCUnhA09uw==}
     engines: {node: '>=10'}
@@ -1673,6 +1693,11 @@ packages:
 
 snapshots:
 
+  '@4rk/vue-mousetrap@2.0.2(vue@3.5.13(typescript@5.6.3))':
+    dependencies:
+      mousetrap: 1.6.5
+      vue: 3.5.13(typescript@5.6.3)
+
   '@ampproject/remapping@2.3.0':
     dependencies:
       '@jridgewell/gen-mapping': 0.3.8
@@ -2107,6 +2132,8 @@ snapshots:
   '@types/estree@1.0.6': {}
 
   '@types/json-schema@7.0.15': {}
+
+  '@types/mousetrap@1.6.15': {}
 
   '@types/node@22.10.5':
     dependencies:
@@ -2829,6 +2856,8 @@ snapshots:
   mitt@3.0.1: {}
 
   mount-vue-component@0.10.2: {}
+
+  mousetrap@1.6.5: {}
 
   mrmime@2.0.0: {}
 
