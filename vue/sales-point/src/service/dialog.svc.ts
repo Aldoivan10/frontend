@@ -1,21 +1,44 @@
 import Mousetrap from 'mousetrap'
 import { createVNode, h, ref, render, type App, type Component, type Ref, type VNode } from 'vue'
-import { VBtn, VCard, VCardActions, VCardText, VDialog, VSpacer } from 'vuetify/components'
+import {
+    VBtn,
+    VCard,
+    VCardActions,
+    VCardItem,
+    VCardText,
+    VCardTitle,
+    VDialog,
+    VSpacer
+} from 'vuetify/components'
 
 export class Dialog {
     private readonly app: App
+    private colors: Dialog.Color = {
+        info: 'blue',
+        choice: 'indigo',
+        error: 'red',
+        success: 'green',
+        warning: 'yellow',
+    }
+    private textColors: Dialog.TextColor = {
+        info: 'text-blue',
+        choice: 'text-indigo',
+        error: 'text-red',
+        success: 'text-green',
+        warning: 'text-yellow',
+        primary: 'text-primary',
+        secondary: 'text-secondary',
+        normal: '',
+    }
 
     constructor(app: App) {
         this.app = app
     }
 
-    public choice(
-        title: string,
-        content: Component | string,
-        props: Dialog.ChoiceProps = { onEscClose: true, persistent: true },
-    ) {
+    public choice(title: string, content: Component | string, props: Dialog.ArgProps) {
         const $container = document.querySelector('.v-overlay-container')!
-        const { onEscClose: esc, ...rest } = props
+        const choiceProps = this.setDefaults(props, 'fas fa-circle-question', 'choice')
+        const { escClose: esc, ...rest } = this.setDefaultProps(title, content, choiceProps)
         const $node = ref<VNode>()
         const show = ref(true)
 
@@ -25,47 +48,105 @@ export class Dialog {
             render(null, $container)
             Mousetrap.unbind('esc')
         }
-        
-        $node.value = this.getDialogNode({ title, content, onAfterLeave, ...rest }, show)
+        /* const onMousetrap = () => (show.value = false) */
+
+        $node.value = this.getDialogNode({ onAfterLeave, ...rest }, show)
         render($node.value, $container)
     }
 
     public confirm() {}
 
-    private getDialogNode(props: Omit<Dialog.Props, 'onEscClose'>, show: Ref<boolean>) {
-        const $dialog = this.getDialog
+    private getDialogNode(props: Dialog.Props, show: Ref<boolean>) {
+        const { title, icon, titleColor, actions, ...rest } = props
+
+        const dialog = this.getDialog
+        const header = this.getHeader
+        const buttons = this.getActions
+
         const $node = createVNode({
             render() {
-                return $dialog({ modelValue: show.value, ...props })
+                let $actions
+                if (actions && Array.isArray(actions)) $actions = buttons(actions)
+                const $header = header(title, titleColor, icon)
+                return dialog({ modelValue: show.value, ...rest }, $header, $actions)
             },
         })
         $node.appContext = this.app._context
         return $node
     }
 
-    private getActions(buttons: Dialog.Button[]) {
+    private getActions(buttons?: Dialog.Button[]) {
+        if (!buttons) return undefined
+
         const $spacer = h(VSpacer)
         const $buttons = buttons.map((btn) => {
-            const { keyComb: key, ...props } = btn
+            const { shortcut, ...props } = btn
             const $btn = ref<HTMLButtonElement>()
-            if (key) Mousetrap.bind(key, () => $btn.value?.click())
+            if (shortcut) Mousetrap.bind(shortcut, () => $btn.value?.click())
             return h(VBtn, { ref: $btn, ...props }, { default: () => btn.text })
         })
         return h(VCardActions, null, { default: () => [$spacer, ...$buttons] })
     }
 
-    private getDialog(props: Omit<Dialog.Props, 'onEscClose'>) {
-        const { title, content, actions, ...rest } = props
+    private getHeader(title: string, color?: string, prependIcon?: string) {
+        const $title = h(VCardTitle, { class: 'font-weight-bold' }, { default: () => title })
+        const $header = h(VCardItem, { class: color, prependIcon }, { default: () => $title })
+        return $header
+    }
+
+    private getDialog(props: Omit<Dialog.Props, 'title'>, header?: VNode, actions?: VNode) {
+        const { content, ...rest } = props
+        const $childs = header ? [header] : []
         const $content = h(VCardText, null, { default: () => h(content) })
-        const $childs = [$content]
+        $childs.push($content)
+        if (actions) $childs.push(actions)
 
-        if (actions && Array.isArray(actions)) {
-            const $actions = this.getActions(actions)
-            $childs.push($actions)
-        }
-
-        const $card = h(VCard, { title }, { default: () => $childs })
+        const $card = h(VCard, null, { default: () => $childs })
         const $dialog = h(VDialog, rest, { default: () => $card })
         return $dialog
+    }
+
+    private setDefaultProps(
+        title: string,
+        content: string | Component,
+        props: Dialog.ArgProps,
+    ): Dialog.Props {
+        const {
+            icon = 'fas fa-comment-dots',
+            titleColor: textColor = 'normal',
+            transition = 'scale-transition',
+            fullScreen = false,
+            persistent = true,
+            escClose = true,
+            width = '25%',
+            role = 'info',
+            actions,
+        } = props
+        const titleColor = this.textColors[textColor]
+        if (Array.isArray(actions))
+            actions.forEach((btn) => {
+                btn.color = btn.color ?? this.colors[role]
+            })
+
+        return {
+            icon,
+            title,
+            content,
+            titleColor,
+            fullScreen,
+            persistent,
+            transition,
+            escClose,
+            width,
+        }
+    }
+
+    private setDefaults(
+        props: Dialog.ArgProps,
+        defIcon: string,
+        defRole: Dialog.DRole,
+    ): Dialog.ArgProps {
+        const { role = defRole, icon = defIcon, ...rest } = props
+        return { role, icon, ...rest }
     }
 }
