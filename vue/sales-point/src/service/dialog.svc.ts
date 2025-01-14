@@ -25,7 +25,7 @@ export class Dialog {
             render(null, $container)
             Mousetrap.unbind('esc')
         }
-
+        
         $node.value = this.getDialogNode({ title, content, onAfterLeave, ...rest }, show)
         render($node.value, $container)
     }
@@ -56,7 +56,7 @@ export class Dialog {
 
     private getDialog(props: Omit<Dialog.Props, 'onEscClose'>) {
         const { title, content, actions, ...rest } = props
-        const $content = h(VCardText, null, { default: () => content })
+        const $content = h(VCardText, null, { default: () => h(content) })
         const $childs = [$content]
 
         if (actions && Array.isArray(actions)) {
