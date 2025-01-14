@@ -1,9 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useTabStore } from '@/stores/tab.store'
+import { storeToRefs } from 'pinia'
+
+const tabStore = useTabStore()
+const { tabs } = storeToRefs(tabStore)
+</script>
 
 <template>
     <v-card class="flex-grow-1 w-100 bg-primary-darken-1" elevation="0">
         <v-tabs
             bg-color="primary-darken-1"
+            v-if="tabs.length"
             density="compact"
             mandatory="force"
             center-active

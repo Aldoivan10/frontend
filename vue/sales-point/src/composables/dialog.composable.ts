@@ -3,10 +3,10 @@ import { Dialog } from '@/service/dialog.svc'
 import { inject, ref } from 'vue'
 
 export function useDialog() {
-    const dialog = inject<Omit<Dialog, 'install'>>(DialogSymbol)
+    const dialog = inject<Dialog>(DialogSymbol)
     if (!dialog)
         throw new Error('useDialog debe ser utilizado después de instalar el dialogPlugin.')
-    const $dialog = ref<Omit<Dialog, 'install'>>(dialog)
+    const $dialog = ref<Dialog>(dialog)
 
     return { dialog, $dialog: $dialog! }
 }
