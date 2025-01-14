@@ -13,8 +13,8 @@ export class APIFetch {
                     signal: AbortSignal.timeout(timeout),
                 })
                 if (response.ok) {
-                    const data = (await response.json()) as T
-                    resolve({ ok: true, data })
+                    const json = await response.json()
+                    resolve({ ok: true, data: json.data })
                 } else
                     resolve({
                         ok: false,
