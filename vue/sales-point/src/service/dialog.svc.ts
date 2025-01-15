@@ -35,23 +35,29 @@ export class Dialog {
         this.app = app
     }
 
-    public choice(title: string, content: Component | string, props: Dialog.ArgProps) {
-        const $container = document.querySelector('.v-overlay-container')!
-        const choiceProps = this.setDefaults(props, 'fas fa-circle-question', 'choice')
-        const { escClose: esc, ...rest } = this.setDefaultProps(title, content, choiceProps)
-        const $node = ref<VNode>()
-        const show = ref(true)
+    public choice<T>(title: string, content: Component | string, props: Dialog.ArgProps) {
+        return new Promise<Maybe<T>>((resolve) => {
+            const $container = document.querySelector('.v-overlay-container')!
+            const choiceProps = this.setDefaults(props, 'fas fa-circle-question', 'choice')
+            const { escClose: esc, ...rest } = this.setDefaultProps(title, content, choiceProps)
+            const $node = ref<VNode>()
+            const show = ref(true)
 
-        if (esc) Mousetrap.bind('esc', () => (show.value = false))
+            if (esc) Mousetrap.bind('esc', () => (show.value = false))
 
-        const onAfterLeave = () => {
-            render(null, $container)
-            Mousetrap.unbind('esc')
-        }
-        /* const onMousetrap = () => (show.value = false) */
+            const onAfterLeave = () => {
+                render(null, $container)
+                Mousetrap.unbind('esc')
+            }
 
-        $node.value = this.getDialogNode({ onAfterLeave, ...rest }, show)
-        render($node.value, $container)
+            const onCloseDialog = (data: T) => {
+                resolve(data)
+                show.value = false
+            }
+
+            $node.value = this.getDialogNode({ onAfterLeave, onCloseDialog, ...rest }, show)
+            render($node.value, $container)
+        })
     }
 
     public confirm() {}
@@ -95,12 +101,15 @@ export class Dialog {
     }
 
     private getDialog(props: Omit<Dialog.Props, 'title'>, header?: VNode, actions?: VNode) {
-        const { content, ...rest } = props
+        const { content, onCloseDialog, ...rest } = props
         const $childs = header ? [header] : []
-        const $content = h(VCardText, null, { default: () => h(content) })
+        const $content = h(VCardText, null, {
+            default: () => h(content, { showModal: rest.modelValue, onCloseDialog }),
+        })
         $childs.push($content)
         if (actions) $childs.push(actions)
-
+        
+        console.log(rest.modelValue)
         const $card = h(VCard, null, { default: () => $childs })
         const $dialog = h(VDialog, rest, { default: () => $card })
         return $dialog
@@ -123,6 +132,7 @@ export class Dialog {
             actions,
         } = props
         const titleColor = this.textColors[textColor]
+
         if (Array.isArray(actions))
             actions.forEach((btn) => {
                 btn.color = btn.color ?? this.colors[role]
@@ -131,13 +141,13 @@ export class Dialog {
         return {
             icon,
             title,
+            width,
             content,
+            escClose,
             titleColor,
             fullScreen,
             persistent,
             transition,
-            escClose,
-            width,
         }
     }
 
