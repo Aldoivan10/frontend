@@ -9,7 +9,7 @@ const { availibleUsers: users } = storeToRefs(userStore)
 const $emit = defineEmits<{ closeDialog: [data: User.State] }>()
 
 function getSequence(num: number) {
-    return num.toString().split("").join(" ")
+    return num.toString().split('').join(' ')
 }
 
 function onShortcut(evt: KeyboardEvent) {
@@ -25,7 +25,7 @@ onMounted(async () => await userStore.findSystemUsers())
         <v-btn
             v-for="(user, key) in users"
             v-mousetrap="getSequence(key + 1)"
-            @click="$emit('closeDialog',user)"
+            @click="$emit('closeDialog', user)"
             @mousetrap="onShortcut"
             class="text-truncate"
             color="secondary"
