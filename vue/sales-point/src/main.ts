@@ -6,17 +6,20 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { AppTheme } from './theme/theme'
 
-import VueMousetrap from '@4rk/vue-mousetrap'
+import { ApiCLientPlugin } from '@aldoivan10/v-api-client'
+import { VShortcut } from '@aldoivan10/v-shortcut'
+import { Dialog } from '@aldoivan10/vuetify-dialog'
 import App from './App.vue'
-import { DialogPlugin } from './plugins/dialog.plugin'
+import { VITE_API_URL } from './config'
 import router from './router'
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
-app.use(DialogPlugin)
 app.use(AppTheme)
-app.use(VueMousetrap)
+app.use(Dialog)
+app.use(VShortcut)
+app.use(ApiCLientPlugin, { baseUrl: VITE_API_URL })
 
 app.mount('#app')
