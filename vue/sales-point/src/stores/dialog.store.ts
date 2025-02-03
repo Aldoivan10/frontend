@@ -1,15 +1,29 @@
-import { DialogSymbol } from '@/plugins/dialog.plugin'
-import { Dialog } from '@/service/dialog.svc'
+import ChoiseUser from '@/components/user/ChoiseUser.vue'
+import LoginUser from '@/components/user/LoginUser.vue'
+import { useDialog } from '@aldoivan10/vuetify-dialog/composable'
 import { defineStore } from 'pinia'
-import { inject } from 'vue'
+import { markRaw } from 'vue'
 
 export const useDialogStore = defineStore('dialog', () => {
-    const dialog = inject<Omit<Dialog, 'install'>>(DialogSymbol)
+    const dialog = useDialog()
 
-    if (!dialog)
-        throw new Error('useDialog debe ser utilizado después de instalar el dialogPlugin.')
+    async function showUsers(escClose = true) {
+        const user = await dialog.simple<User.State>({
+            header: { title: 'Seleccionar usuario', prependIcon: 'fas fa-user' },
+            body: { content: markRaw(ChoiseUser) },
+            persistent: escClose,
+        })
+        return user
+    }
 
-    function showUsers(onEscClose = true) {}
+    async function authUser() {
+        const auth = await dialog.confirm<boolean>({
+            header: { title: 'Identificarse' },
+            body: { content: markRaw(LoginUser) },
+            persistent: true,
+        })
+        return auth
+    }
 
-    return { dialog, showUsers }
+    return { dialog, showUsers, authUser }
 })
