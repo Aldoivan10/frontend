@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { LinkedArray } from '@/model/LinkedArray'
+import { useTabStore } from '@/stores/tab.store'
 import Mousetrap from 'mousetrap'
-import { onMounted, toRefs } from 'vue'
+import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
 
 const $props = defineProps({
-    tabs: { type: LinkedArray<User.State>, default: new LinkedArray<User.State>() },
     nextShortcut: { type: String, default: 'alt+ctrl+t' },
     prevShortcut: { type: String, default: 'alt+shift+t' },
 })
-const { tabs } = toRefs($props)
+
+const tabStore = useTabStore()
+const { tabs } = storeToRefs(tabStore)
 
 onMounted(() => {
     Mousetrap.bind($props.prevShortcut, (evt) => {
@@ -26,7 +28,7 @@ onMounted(() => {
     <v-card class="flex-grow-1 w-100 bg-primary-darken-1" elevation="0">
         <v-tabs
             bg-color="primary-darken-1"
-            v-model="tabs._index"
+            v-model="tabs.index"
             v-if="tabs.length"
             density="compact"
             mandatory="force"

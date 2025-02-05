@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { LinkedArray } from '@/model/LinkedArray'
 import { useDialogStore } from '@/stores/dialog.store'
+import { useTabStore } from '@/stores/tab.store'
+import { useUserStore } from '@/stores/user.store'
 import { getTooltip, TooltipProps } from '@/util/util'
-import { computed, toRefs } from 'vue'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 
 const $props = defineProps({
-    tabs: { type: LinkedArray<User.State>, default: new LinkedArray() },
     ...TooltipProps('Expandir menú', 'alt+t'),
 })
 const tooltipText = computed(() =>
@@ -13,21 +14,25 @@ const tooltipText = computed(() =>
 )
 
 const { showUsers } = useDialogStore()
-const { tabs } = toRefs($props)
+const userStore = useUserStore()
+const tabStore = useTabStore()
+const { availibleUsers: users } = storeToRefs(userStore)
+const { tabs } = storeToRefs(tabStore)
 
 async function addTab() {
-    const user = await showUsers()
-    tabs.value.push(user!)
+    if (tabs.value.length === users.value.length) return
+    const user = await showUsers(false)
+    tabStore.addTab(user)
 }
 </script>
 
 <template>
     <v-btn
+        size="default"
         variant="text"
         @click="addTab"
-        @mousetrap="addTab"
-        v-mousetrap="shortcut"
         v-tooltip="tooltipText"
         icon="fas fa-circle-plus"
+        v-shortcut.click="shortcut"
     />
 </template>

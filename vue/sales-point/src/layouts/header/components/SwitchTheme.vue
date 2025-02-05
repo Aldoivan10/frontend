@@ -20,10 +20,10 @@ function switchTheme() {
 
 <template>
     <v-btn
-        @mousetrap="switchTheme"
         @click="switchTheme"
         v-tooltip="tooltipText"
-        v-mousetrap="shortcut"
+        v-shortcut.click="shortcut"
+        size="default"
         variant="text"
         :icon
     />

@@ -15,10 +15,10 @@ const tooltipText = computed(() => getTooltip(tooltip, shortcut, showShortcut, s
 
 <template>
     <v-app-bar-nav-icon
+        size="default"
         icon="fas fa-bars"
-        v-mousetrap="shortcut"
+        v-shortcut.click="shortcut"
         v-tooltip="tooltipText"
         @click="expand = !expand"
-        @mousetrap="expand = !expand"
     />
 </template>

@@ -14,10 +14,10 @@ const tooltipText = computed(() =>
 <template>
     <v-btn
         @click="authUser"
-        @mousetrap="authUser"
-        v-mousetrap="shortcut"
+        v-shortcut.click="shortcut"
         v-tooltip="tooltipText"
         icon="fas fa-user-tie"
         variant="text"
+        size="default"
     />
 </template>
