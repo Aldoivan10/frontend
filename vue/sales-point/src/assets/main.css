@@ -24,7 +24,7 @@ html {
                 flex-grow: 1;
                 display: grid;
                 place-items: center;
-                padding: var(--space);
+                padding: calc(var(--space) * 2);
                 background-color: rgb(var(--v-theme-surface));
 
                 .icon-aldoivan {
@@ -34,6 +34,16 @@ html {
                     fill: rgb(var(--v-theme-primary));
                     stroke: rgb(var(--v-theme-primary));
                     filter: drop-shadow(0 0 0.7rem rgba(var(--v-theme-surface-variant), 0.5));
+                }
+
+                .v-card {
+                    table {
+                        thead tr th {
+                            background-color: color-mix(in srgb, rgb(var(--v-theme-secondary)), rgb(var(--v-theme-surface)) 10%) !important;
+                            font-weight: bold;
+                            color: white;
+                        }
+                    }
                 }
             }
         }

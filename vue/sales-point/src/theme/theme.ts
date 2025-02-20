@@ -39,6 +39,7 @@ export const AppTheme = createVuetify({
     defaults: {
         VTextField: {
             density: 'comfortable',
+            color: 'primary',
         },
         VTextarea: {
             density: 'comfortable',
@@ -56,6 +57,20 @@ export const AppTheme = createVuetify({
         VListItem: {
             VIcon: { size: 'small' },
         },
+        VDataTableServer: {
+            class: 'bg-background',
+            density: 'comfortable',
+            VCombobox: {
+                color: 'secondary',
+                variant: 'underlined',
+            },
+            VCheckboxBtn: {
+                color: 'secondary',
+            }
+        },
+        VIcon: {
+            size: 'small',
+        }
     },
     directives,
     icons: {

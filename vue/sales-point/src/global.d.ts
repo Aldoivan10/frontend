@@ -1,6 +1,12 @@
-import { ButtonHTMLAttributes, type App } from 'vue'
+import 'vue';
 
 declare global {
+    namespace Route {
+        type Link = { path: string; name: string }
+
+        type Links = Record<string, Link>
+    }
+
     namespace Menu {
         type Item = {
             title: string
@@ -23,67 +29,54 @@ declare global {
             logged: boolean
             views: Shortcut[]
             shortcuts: Shortcut[]
+            route?: string
+            search?: string
+            itemsPerPage?: number
+            page?: number
         }
     }
 
-    namespace Dialog {
-        type Button = {
-            text: string
-            form?: string
-            color?: string
-            keyComb?: string
-            loading?: boolean
-            variant?: 'tonal' | 'text'
-            action?: (btn: Button) => void
-            type?: ButtonHTMLAttributes['type']
-        }
+    namespace Product {
+        type Catalog = { id: number; name: string }
 
-        type Props = {
-            title: string
-            content: string | Component
+        type Code = Catalog & { code: string | null }
 
-            icon?: string
-            persistent?: boolean
-            modelValue?: Any
-            onEscClose: boolean
-            fullScreen?: boolean
-            role?: Role | 'choice'
-            width?: string | number
-            onAfterLeave?: () => void
-            maxWidth?: string | number
-            actions?: Button[] | boolean
-            form?: { name: string; props: Record<string, string | number | boolean> }
-        }
+        type Unit = Catalog & { profit: number | null; sale: number }
 
-        type Child = VNode<
-            RendererNode,
-            RendererElement,
-            {
-                [key: string]: Any
-            }
-        >
-
-        type ChoiceProps = Omit<
-            Props,
-            'icon' | 'role' | 'modelValue' | 'title' | 'content' | 'onAfterLeave'
-        >
-
-        type Service = {
-            install: (app: App) => void
+        type Item = {
+            id: number
+            name: string
+            amount: number
+            min: number
+            refundable: boolean
+            buy: boolean
+            supplier: Catalog
+            department: Catalog
+            codes: Code[]
+            units: Unit[]
         }
     }
+
+    namespace Table {
+        type Options = { page?: number; itemsPerPage?: number, search?: string }
+    }
+
+    type APIParams = { limit?: number; offset?: number } & Record<string, any>
 
     type Role = 'info' | 'warning' | 'error' | 'success'
 
     type Maybe<T> = null | undefined | T
-}
 
-export {}
+    type Env = ImportMetaEnv & {
+        VITE_API_URL: string
+    }
 
-declare module 'vue' {
-    interface ComponentCustomProperties {
-        $dialog: {
-            choice: (title: string, content: Component | string, props: ChoiceProps) => Any
-        }
+    type Head = {
+        key?: string
+        title?: string
+        sortable?: boolean
+        value: SelectItemKey<T>
     }
 }
+
+export { };

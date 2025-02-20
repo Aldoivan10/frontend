@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useDialog } from './composables/dialog.composable'
-import HeaderLayout from './layouts/HeaderLayout.vue'
+import HeaderLayout from './layouts/header/HeaderLayout.vue'
 import MainLayout from './layouts/MainLayout.vue'
+import { useDialogStore } from './stores/dialog.store'
+import { useTabStore } from './stores/tab.store'
 
-const { dialog } = useDialog()
+const tabStore = useTabStore()
+const { showUsers } = useDialogStore()
 
-onMounted(() => {
-    dialog.choice('Title', 'Content')
+onMounted(async () => {
+    const user = await showUsers(true)
+    tabStore.addTab(user)
 })
 </script>
 
 <template>
     <HeaderLayout />
     <MainLayout />
-    <!-- <AppDialog /> -->
 </template>

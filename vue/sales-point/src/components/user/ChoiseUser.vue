@@ -15,8 +15,8 @@ function getSequence(num: number) {
     return num.toString().split('').join(' ')
 }
 
-function disabled(user: User.State){
-    const finded = tabs.value.find(u =>  user.name == u.name)
+function disabled(user: User.State) {
+    const finded = tabs.value.find((u) => user.name == u.name)
     return Boolean(finded)
 }
 

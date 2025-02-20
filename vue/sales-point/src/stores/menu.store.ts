@@ -10,7 +10,7 @@ export const useMenuStore = defineStore('menu-store', () => {
             subtitle: 'F1',
             icon: 'fas fa-cart-shopping',
             tooltip: 'F1',
-            route: Route.SALES_POINT.path,
+            route: Route.SALES_POINT,
         },
     ])
     const expandMenu = ref(true)

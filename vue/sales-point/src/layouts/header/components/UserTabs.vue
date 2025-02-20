@@ -1,16 +1,28 @@
 <script setup lang="ts">
 import { useTabStore } from '@/stores/tab.store'
+import { getTooltip } from '@/util/util'
 import Mousetrap from 'mousetrap'
 import { storeToRefs } from 'pinia'
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 
 const $props = defineProps({
     nextShortcut: { type: String, default: 'alt+ctrl+t' },
     prevShortcut: { type: String, default: 'alt+shift+t' },
+    closeShorcut: { type: String, default: 'CTRL+SHIFT+T' },
+    showShortcut: {
+        type: Boolean,
+        default: true,
+    },
+    showTooltip: {
+        type: Boolean,
+        default: true,
+    },
 })
 
 const tabStore = useTabStore()
 const { tabs } = storeToRefs(tabStore)
+const { closeShorcut, showShortcut, showTooltip } = $props
+const tooltipClose = computed(() => getTooltip('CERRAR',  closeShorcut, showTooltip, showShortcut))
 
 onMounted(() => {
     Mousetrap.bind($props.prevShortcut, (evt) => {
@@ -44,7 +56,7 @@ onMounted(() => {
                         variant="plain"
                         max-width="1.1rem"
                         max-height="1.1rem"
-                        v-tooltip="'Cerrar'"
+                        v-tooltip="tooltipClose"
                     />
                 </template>
             </v-tab>

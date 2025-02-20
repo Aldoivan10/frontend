@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PasswordField from '../PasswordField.vue';
+import PasswordField from '../PasswordField.vue'
 </script>
 
 <template>
